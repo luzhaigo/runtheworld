@@ -1,8 +1,11 @@
 import React, { FC, RefObject } from 'react';
 import styled, { css } from 'styled-components';
 import { Color } from 'styles/helpers/color';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-export type Props = AT.Button<{
+export type Props = RTW.Button<{
+  loading?: boolean;
   primary?: boolean;
   innerRef?: RefObject<HTMLButtonElement>;
 }>;
@@ -39,16 +42,39 @@ const Btn = styled.button<{ primary?: boolean }>`
   }
 `;
 
+const Icon = styled(({ loading, ...rest }) => <FontAwesomeIcon {...rest} />)<{
+  loading?: boolean;
+}>`
+  && {
+    transition: width 0.5s, margin-right 0.5s;
+    width: ${(props) => (props.loading ? undefined : '0')};
+    margin-right: ${(props) => (props.loading ? '4px' : '0')};
+    ${(props) =>
+      props.loading === false &&
+      css`
+        path {
+          display: none;
+        }
+      `}
+  }
+`;
+
 const Button: FC<Props> = ({
   children,
+  loading = false,
   disabled,
   innerRef,
   primary = false,
   ...rest
 }) => {
   return (
-    <Btn {...rest} ref={innerRef} disabled={disabled} primary={primary}>
-      {children}
+    <Btn
+      {...rest}
+      ref={innerRef}
+      disabled={loading || disabled}
+      primary={primary}
+    >
+      <Icon icon={faSpinner} spin={loading} loading={loading} /> {children}
     </Btn>
   );
 };

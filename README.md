@@ -1,6 +1,14 @@
-# Getting Started with Create React App
+# Run The World
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- You can access the web app by this url https://luzhaigo.github.io/runtheworld/.
+- Implemented parameter settings, join, leave, publish and unpublish features.
+- Implemented switching audio, video and resolution features.
+- Implemented One-to-One streaming.
+- Implemented mute/unmute(Audio, video) features
+- Implemented multiple people streaming.
+- Using React.js, Typescript and styled-components.
+- Implemented components testings by testing-library/react.
+- Supported responsive web design (RWD).
 
 ## Available Scripts
 

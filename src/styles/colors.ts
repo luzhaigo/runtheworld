@@ -8,6 +8,8 @@ const colors = {
   charcoal: '#313d47',
   silver: '#bdbdbd',
   'dark-gray': '#a4a9ac',
+  timberwolf: '#d8d8d8',
+  'page-gray': '#fafafa',
 };
 
 export default colors;

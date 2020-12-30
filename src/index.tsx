@@ -8,6 +8,9 @@ import GlobalStyle from 'components/global-style';
 import { Normalize } from 'styled-normalize';
 import reportWebVitals from './reportWebVitals';
 
+import 'bootstrap/scss/bootstrap-grid.scss';
+import 'react-toastify/dist/ReactToastify.min.css';
+
 ReactDOM.render(
   <ThemeProvider theme={{ colors, MediaBreakpoint }}>
     <Normalize />

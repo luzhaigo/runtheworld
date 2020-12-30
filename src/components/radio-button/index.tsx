@@ -11,7 +11,8 @@ type Props = {
 };
 
 const InlineBlock = styled.div`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
   * {
     cursor: pointer;
@@ -36,7 +37,6 @@ const RadioButton: FC<Props> = ({
         value={value}
         type="radio"
         name={name}
-        id={name}
         onChange={onChange}
         checked={checked}
         aria-label={label}

@@ -34,7 +34,7 @@ const StyledSelect = styled(Select)`
     }
     .react-dropdown-select-content input {
       color: ${Color.charcoal};
-      width: 50%;
+      width: 0;
       font-size: 16px;
       &::placeholder {
         color: ${Color.silver};
@@ -54,10 +54,12 @@ const DropdownSelect = <T extends string | object = {}>({
   placeholder,
   name,
   onChange,
+  className,
 }: Props<T>): JSX.Element => {
   return (
     <StyledSelect
       clearOnBlur
+      className={className}
       searchable={false}
       options={options}
       values={selectedOption ? [selectedOption] : []}
