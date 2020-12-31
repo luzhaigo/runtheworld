@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/runtheworld/static/js/main.c2995d11.chunk.js",
-    "main.js.map": "/runtheworld/static/js/main.c2995d11.chunk.js.map",
+    "main.js": "/runtheworld/static/js/main.40174a3c.chunk.js",
+    "main.js.map": "/runtheworld/static/js/main.40174a3c.chunk.js.map",
     "runtime-main.js": "/runtheworld/static/js/runtime-main.09aa6bba.js",
     "runtime-main.js.map": "/runtheworld/static/js/runtime-main.09aa6bba.js.map",
     "static/css/2.3396d33b.chunk.css": "/runtheworld/static/css/2.3396d33b.chunk.css",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.09aa6bba.js",
     "static/css/2.3396d33b.chunk.css",
     "static/js/2.b0868d2b.chunk.js",
-    "static/js/main.c2995d11.chunk.js"
+    "static/js/main.40174a3c.chunk.js"
   ]
 }
