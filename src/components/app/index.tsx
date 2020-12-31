@@ -72,10 +72,9 @@ const Toast = styled(ToastContainer)`
 `;
 
 const initialSettings = {
-  appId: '3c8f8535f5ca4d23a2c6d550745c1141',
-  channel: 'test',
-  token:
-    '00634e5cdd2dd0547368b549ddbc83f0f8bIAAudrtcvrf30S/6wsUANYFutkGz8qtFL4zCUXKuqmWCkwx+f9gAAAAAEACpE93I4invXwEAAQDiKe9f',
+  appId: '',
+  channel: '',
+  token: '',
   uid: '',
   camera: '',
   microphone: '',
@@ -160,13 +159,13 @@ const App = () => {
                       setClient(client);
                       try {
                         await client.init(appId);
-                        await client.join(
+                        const streamID = await client.join(
                           token,
                           channel,
-                          uid === '' ? null : uid,
+                          uid === '' || Number.isNaN(+uid) ? null : uid,
                         );
                         const stream = AgoraRTC.createStream({
-                          streamID: uid || `local-user`,
+                          streamID,
                           video: true,
                           audio: true,
                           screen: false,

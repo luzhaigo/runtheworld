@@ -68,6 +68,13 @@ const WithPlayer = <P extends InjectedType>(
               stream.muteVideo();
               dispatch(muteVideoById({ uid, type: PeerAVEventType.MuteVideo }));
             }, 10);
+          } else {
+            setTimeout(() => {
+              stream.unmuteVideo();
+              dispatch(
+                unmuteVideoById({ uid, type: PeerAVEventType.UnmuteVideo }),
+              );
+            }, 10);
           }
         }}
       >
