@@ -38,6 +38,7 @@ type Option = {
 type Props = AdvancedSettings & {
   cameraOptions: Option[];
   microphoneOptions: Option[];
+  isPlaying?: boolean;
   updateSettings: (updatedSettings: Partial<AdvancedSettings>) => void;
 };
 
@@ -65,6 +66,7 @@ const Settings: FC<RTW.Div<Props>> = ({
   microphone,
   microphoneOptions,
   cameraResolution,
+  isPlaying = false,
   updateSettings,
   ...rest
 }) => {
@@ -75,15 +77,19 @@ const Settings: FC<RTW.Div<Props>> = ({
   return (
     <Card {...rest}>
       <h3>ADVANCED SETTINGS</h3>
-      <label htmlFor="uid">UID</label>
-      <Input
-        value={uid}
-        name="uid"
-        id="uid"
-        aria-label="uid"
-        onChange={onChange}
-        placeholder="uid"
-      />
+      {isPlaying === false && (
+        <>
+          <label htmlFor="uid">UID</label>
+          <Input
+            value={uid}
+            name="uid"
+            id="uid"
+            aria-label="uid"
+            onChange={onChange}
+            placeholder="uid"
+          />
+        </>
+      )}
       {cameraOptions?.length > 0 && (
         <>
           <label>CAMERA</label>
@@ -122,40 +128,44 @@ const Settings: FC<RTW.Div<Props>> = ({
           (option) => option.value === cameraResolution,
         )}
       />
-      <label>Mode</label>
-      <div className="radio-buttons">
-        <RadioButton
-          label="rtc"
-          value={Mode.RTC}
-          name="mode"
-          checked={Mode.RTC === mode}
-          onChange={onChange}
-        />
-        <RadioButton
-          label="live"
-          value={Mode.LIVE}
-          name="mode"
-          checked={Mode.LIVE === mode}
-          onChange={onChange}
-        />
-      </div>
-      <label>CODEC</label>
-      <div className="radio-buttons">
-        <RadioButton
-          label="vp8"
-          value={Codec.VP8}
-          name="codec"
-          checked={Codec.VP8 === codec}
-          onChange={onChange}
-        />
-        <RadioButton
-          label="h264"
-          value={Codec.H264}
-          name="codec"
-          checked={Codec.H264 === codec}
-          onChange={onChange}
-        />
-      </div>
+      {isPlaying === false && (
+        <>
+          <label>Mode</label>
+          <div className="radio-buttons">
+            <RadioButton
+              label="rtc"
+              value={Mode.RTC}
+              name="mode"
+              checked={Mode.RTC === mode}
+              onChange={onChange}
+            />
+            <RadioButton
+              label="live"
+              value={Mode.LIVE}
+              name="mode"
+              checked={Mode.LIVE === mode}
+              onChange={onChange}
+            />
+          </div>
+          <label>CODEC</label>
+          <div className="radio-buttons">
+            <RadioButton
+              label="vp8"
+              value={Codec.VP8}
+              name="codec"
+              checked={Codec.VP8 === codec}
+              onChange={onChange}
+            />
+            <RadioButton
+              label="h264"
+              value={Codec.H264}
+              name="codec"
+              checked={Codec.H264 === codec}
+              onChange={onChange}
+            />
+          </div>
+        </>
+      )}
     </Card>
   );
 };

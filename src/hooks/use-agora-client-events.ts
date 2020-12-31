@@ -2,12 +2,16 @@ import { useEffect } from 'react';
 import { Stream } from 'types/stream';
 import { IClientWithPromise } from 'libs/agora-rtc-sdk';
 import { errToast, toast } from 'libs/react-toastify';
-import { peerAVEvent } from 'types/peerAVEvent';
+import { PeerAVEvent } from 'types/peer-av-event';
 import { useDispatch } from 'react-redux';
 import {
   updateLocalStream,
   updateRemoteStreams,
   clearAllStreams,
+  muteAudioById,
+  unmuteAudioById,
+  muteVideoById,
+  unmuteVideoById,
 } from 'actions/stream';
 
 export default (client: IClientWithPromise | null) => {
@@ -65,17 +69,21 @@ export default (client: IClientWithPromise | null) => {
       console.error(err);
       errToast(err.reason);
     }
-    function peerUnmuteAudio(e: peerAVEvent) {
+    function peerUnmuteAudio(e: PeerAVEvent) {
       console.log('peerUnmuteAudio', e);
+      dispatch(unmuteAudioById(e));
     }
-    function peerMuteAudio(e: peerAVEvent) {
+    function peerMuteAudio(e: PeerAVEvent) {
       console.log('peerMuteAudio', e);
+      dispatch(muteAudioById(e));
     }
-    function peerUnMuteVideo(e: peerAVEvent) {
+    function peerUnMuteVideo(e: PeerAVEvent) {
       console.log('peerUnMuteVideo', e);
+      dispatch(unmuteVideoById(e));
     }
-    function peerMuteVideo(e: peerAVEvent) {
+    function peerMuteVideo(e: PeerAVEvent) {
       console.log('peerMuteVideo', e);
+      dispatch(muteVideoById(e));
     }
     client.on('stream-published', addLocalStream);
     client.on('stream-added', remoteStreamSub);

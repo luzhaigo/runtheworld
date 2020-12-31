@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import SP from 'agora-stream-player';
-import { Stream } from 'libs/agora-rtc-sdk';
+import { Stream } from 'types/stream';
 import Btn from 'components/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -16,6 +16,10 @@ type Props = {
   label?: string;
   width?: string | number;
   height?: string | number;
+  isAudioMuted?: boolean;
+  isVideoMuted?: boolean;
+  onCameraClick?: () => void;
+  onMicrophoneClick?: () => void;
 };
 
 const Container = styled.div<{ $width?: string }>`
@@ -44,16 +48,15 @@ const Button = styled(Btn)`
   border-radius: 50%;
 `;
 
-const isAudioMuted = (stream: Stream) =>
-  !!(stream.getAudioTrack() as any)?.muted;
-const isVideoMuted = (stream: Stream) =>
-  !!(stream.getVideoTrack() as any)?.muted;
-
-const Player: FC<RTW.Div<Props>> = ({
+const Player: FC<Props> = ({
   stream,
   label,
   width,
   height,
+  isAudioMuted,
+  isVideoMuted,
+  onCameraClick,
+  onMicrophoneClick,
   ...rest
 }) => {
   if (typeof width === 'number') {
@@ -68,8 +71,7 @@ const Player: FC<RTW.Div<Props>> = ({
   if (height && !/(px|%)$/.test(height)) {
     height = `${height}px`;
   }
-  const [audioMuted, setAudioMuted] = useState(isAudioMuted(stream));
-  const [videoMuted, setVideoMuted] = useState(isVideoMuted(stream));
+
   return (
     <Container $width={width} {...rest}>
       <StreamPlayer
@@ -79,33 +81,13 @@ const Player: FC<RTW.Div<Props>> = ({
         $height={height}
       />
       <div className="actions">
-        <Button
-          onClick={() => {
-            if (audioMuted) {
-              stream.unmuteAudio();
-              setAudioMuted(false);
-            } else {
-              stream.muteAudio();
-              setAudioMuted(true);
-            }
-          }}
-        >
+        <Button onClick={onMicrophoneClick}>
           <FontAwesomeIcon
-            icon={audioMuted ? faMicrophoneSlash : faMicrophone}
+            icon={isAudioMuted ? faMicrophoneSlash : faMicrophone}
           />
         </Button>
-        <Button
-          onClick={() => {
-            if (videoMuted) {
-              stream.unmuteVideo();
-              setVideoMuted(false);
-            } else {
-              stream.muteVideo();
-              setVideoMuted(true);
-            }
-          }}
-        >
-          <FontAwesomeIcon icon={videoMuted ? faVideoSlash : faVideo} />
+        <Button onClick={onCameraClick}>
+          <FontAwesomeIcon icon={isVideoMuted ? faVideoSlash : faVideo} />
         </Button>
       </div>
     </Container>

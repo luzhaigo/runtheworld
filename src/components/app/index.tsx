@@ -13,10 +13,14 @@ import transformMediaDeviceInfo2Option from 'utils/transform-media-device-info-t
 import useAgoraClientEvents from 'hooks/use-agora-client-events';
 import useSwitchDevice from 'hooks/use-switch-device';
 import useChangeResolution from 'hooks/use-change-resolution';
+import useAgoraStreamEvents from 'hooks/use-agora-stream-events';
 import { Container, Row as BSRow, Col } from 'react-bootstrap';
 import { MediaBreakpoint } from 'styles/helpers/breakpoint';
 import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+import WithPlayer from 'hocs/with-player';
+
+const ConnectedPlayer = WithPlayer(Player);
 
 const Page = styled.div`
   height: 100%;
@@ -71,7 +75,7 @@ const initialSettings = {
   appId: '3c8f8535f5ca4d23a2c6d550745c1141',
   channel: 'test',
   token:
-    '00634e5cdd2dd0547368b549ddbc83f0f8bIACkfhrbesmd9668aeBOyy6JcLyW+lLG9svVCfSZS/AtCAx+f9gAAAAAEACZqwdIDMftXwEAAQAMx+1f',
+    '00634e5cdd2dd0547368b549ddbc83f0f8bIAAudrtcvrf30S/6wsUANYFutkGz8qtFL4zCUXKuqmWCkwx+f9gAAAAAEACpE93I4invXwEAAQDiKe9f',
   uid: '',
   camera: '',
   microphone: '',
@@ -121,6 +125,7 @@ const App = () => {
   }, [cameras, microphones]);
   useSwitchDevice(localStream, { microphone, camera });
   useChangeResolution(localStream, cameraResolution);
+  useAgoraStreamEvents(localStream);
   const updateSettings = (updatedSettings: Partial<Settings>) => {
     setSettings({ ...settings, ...updatedSettings });
   };
@@ -228,12 +233,13 @@ const App = () => {
                     cameraResolution={cameraResolution}
                     mode={mode}
                     codec={codec}
+                    isPlaying={localStream?.isPlaying()}
                     updateSettings={updateSettings}
                   />
                 </Col>
                 <Col md={6}>
                   {localStream && (
-                    <Player
+                    <ConnectedPlayer
                       className="local-player"
                       stream={localStream}
                       label={localStream.getId() as string}
@@ -243,7 +249,7 @@ const App = () => {
                   )}
                   <div className="remote-players">
                     {remoteStreams.map((stream) => (
-                      <Player
+                      <ConnectedPlayer
                         className="remote-player"
                         key={stream.getId()}
                         stream={stream}

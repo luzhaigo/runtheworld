@@ -1,4 +1,5 @@
 import type { Stream } from 'libs/agora-rtc-sdk';
+import { PeerAVEventType, PeerAVEvent } from 'types/peer-av-event';
 
 export type { Stream };
 
@@ -20,7 +21,31 @@ export type ClearAllStreamsAction = {
   type: typeof CLEAR_ALL_STREAMS;
 };
 
+export type MuteAudioByIdAction = {
+  type: PeerAVEventType.MuteAudio;
+  payload: PeerAVEvent;
+};
+
+export type UnmuteAudioByIdAction = {
+  type: PeerAVEventType.UnmuteAudio;
+  payload: PeerAVEvent;
+};
+
+export type MuteVideoByIdAction = {
+  type: PeerAVEventType.MuteVideo;
+  payload: PeerAVEvent;
+};
+
+export type UnmuteVideoByIdAction = {
+  type: PeerAVEventType.UnmuteVideo;
+  payload: PeerAVEvent;
+};
+
 export type StreamActionTypes =
   | UpdateLocalStreamAction
   | UpdateRemoteStreamsAction
-  | ClearAllStreamsAction;
+  | ClearAllStreamsAction
+  | MuteAudioByIdAction
+  | UnmuteAudioByIdAction
+  | MuteVideoByIdAction
+  | UnmuteVideoByIdAction;

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Stream } from 'libs/agora-rtc-sdk';
+import { Stream } from 'types/stream';
 import { usePrevious } from 'react-use';
 
 export default (stream: Stream | null, resolution: string) => {
