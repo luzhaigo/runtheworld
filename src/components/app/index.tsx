@@ -15,6 +15,8 @@ import useSwitchDevice from 'hooks/use-switch-device';
 import useChangeResolution from 'hooks/use-change-resolution';
 import { Container, Row as BSRow, Col } from 'react-bootstrap';
 import { MediaBreakpoint } from 'styles/helpers/breakpoint';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 
 const Page = styled.div`
   height: 100%;
@@ -94,7 +96,10 @@ const App = () => {
   const [isJoined, setIsJoined] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const [client, setClient] = useState<IClientWithPromise | null>(null);
-  const { localStream, remoteStreams } = useAgoraClientEvents(client);
+  const { local: localStream, remote: remoteStreams } = useSelector(
+    (state: RootState) => state.stream,
+  );
+  useAgoraClientEvents(client);
   const { cameras, microphones } = useUserMedia(
     client,
     transformMediaDeviceInfo2Option,

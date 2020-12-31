@@ -1,26 +1,36 @@
-import { useState, useEffect } from 'react';
-import { IClientWithPromise, Stream } from 'libs/agora-rtc-sdk';
+import { useEffect } from 'react';
+import { Stream } from 'types/stream';
+import { IClientWithPromise } from 'libs/agora-rtc-sdk';
 import { errToast, toast } from 'libs/react-toastify';
+import { peerAVEvent } from 'types/peerAVEvent';
+import { useDispatch } from 'react-redux';
+import {
+  updateLocalStream,
+  updateRemoteStreams,
+  clearAllStreams,
+} from 'actions/stream';
 
 export default (client: IClientWithPromise | null) => {
-  const [localStream, setLocalStream] = useState<Stream | null>(null);
-  const [remoteStreams, setRemoteStreams] = useState<Stream[]>([]);
+  const dispatch = useDispatch();
+  const setLocalStream = (s: Stream | null) => dispatch(updateLocalStream(s));
+  const setRemoteStreams = (func: (list: Stream[]) => Stream[]) =>
+    dispatch(updateRemoteStreams(func));
+  const removeRemoteStreamByUid = (uid: string | number) => {
+    const func = (list: Stream[]) => {
+      const index = list.findIndex((s) => `${s.getId()}` === `${uid}`);
+      const newList = [...list];
+      if (index !== -1) {
+        list[index].isPlaying() && list[index].stop();
+        newList.splice(index, 1);
+      }
+      return newList;
+    };
+    setRemoteStreams(func);
+  };
   useEffect(() => {
     if (!client) {
-      setLocalStream(null);
-      setRemoteStreams([]);
+      dispatch(clearAllStreams());
       return;
-    }
-    function removeRemoteStreamByUid(uid: string | number) {
-      setRemoteStreams((list) => {
-        const index = list.findIndex((s) => `${s.getId()}` === `${uid}`);
-        const newList = [...list];
-        if (index !== -1) {
-          list[index].isPlaying() && list[index].stop();
-          newList.splice(index, 1);
-        }
-        return newList;
-      });
     }
     function addLocalStream(event: { stream: Stream }) {
       const { stream } = event;
@@ -55,11 +65,27 @@ export default (client: IClientWithPromise | null) => {
       console.error(err);
       errToast(err.reason);
     }
+    function peerUnmuteAudio(e: peerAVEvent) {
+      console.log('peerUnmuteAudio', e);
+    }
+    function peerMuteAudio(e: peerAVEvent) {
+      console.log('peerMuteAudio', e);
+    }
+    function peerUnMuteVideo(e: peerAVEvent) {
+      console.log('peerUnMuteVideo', e);
+    }
+    function peerMuteVideo(e: peerAVEvent) {
+      console.log('peerMuteVideo', e);
+    }
     client.on('stream-published', addLocalStream);
     client.on('stream-added', remoteStreamSub);
     client.on('stream-subscribed', addRemoteStreams);
     client.on('peer-leave', peerLeave);
     client.on('stream-removed', removeRemoteStream);
+    client.on('unmute-audio', peerUnmuteAudio);
+    client.on('mute-audio', peerMuteAudio);
+    client.on('unmute-video', peerUnMuteVideo);
+    client.on('mute-video', peerMuteVideo);
     client.on('error', error);
     return () => {
       client.off('stream-published', addLocalStream);
@@ -67,11 +93,11 @@ export default (client: IClientWithPromise | null) => {
       client.off('stream-subscribed', addRemoteStreams);
       client.off('peer-leave', peerLeave);
       client.off('stream-removed', removeRemoteStream);
+      client.off('unmute-audio', peerUnmuteAudio);
+      client.off('mute-audio', peerMuteAudio);
+      client.off('unmute-video', peerUnMuteVideo);
+      client.off('mute-video', peerMuteVideo);
       client.off('error', error);
     };
   }, [client]);
-  return {
-    localStream,
-    remoteStreams,
-  };
 };
