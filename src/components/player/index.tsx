@@ -81,13 +81,17 @@ const Player: FC<Props> = ({
         $height={height}
       />
       <div className="actions">
-        <Button onClick={onMicrophoneClick}>
+        <Button onClick={onMicrophoneClick} data-testid="microphone-button">
           <FontAwesomeIcon
+            data-testid={isAudioMuted ? 'audio-muted' : 'audio-unmuted'}
             icon={isAudioMuted ? faMicrophoneSlash : faMicrophone}
           />
         </Button>
-        <Button onClick={onCameraClick}>
-          <FontAwesomeIcon icon={isVideoMuted ? faVideoSlash : faVideo} />
+        <Button onClick={onCameraClick} data-testid="camera-button">
+          <FontAwesomeIcon
+            data-testid={isVideoMuted ? 'video-muted' : 'video-unmuted'}
+            icon={isVideoMuted ? faVideoSlash : faVideo}
+          />
         </Button>
       </div>
     </Container>

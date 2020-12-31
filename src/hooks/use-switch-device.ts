@@ -11,9 +11,9 @@ const pfSwitchDevice = (
     stream.switchDevice(
       type,
       deviceId,
-      () => {
+      (...args) => {
         console.log(`${type} switch success`);
-        resolve(`${type} switch success`);
+        resolve(args);
       },
       (e) => {
         console.error(e);

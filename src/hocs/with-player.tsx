@@ -62,6 +62,13 @@ const WithPlayer = <P extends InjectedType>(
             stream.muteAudio();
             dispatch(muteAudioById({ uid, type: PeerAVEventType.MuteAudio }));
           }
+          // workaround the issue https://github.com/AgoraIO/rtc-web-archive/issues/15
+          if (isVideoMuted) {
+            setTimeout(() => {
+              stream.muteVideo();
+              dispatch(muteVideoById({ uid, type: PeerAVEventType.MuteVideo }));
+            }, 10);
+          }
         }}
       >
         {children}

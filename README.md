@@ -4,7 +4,7 @@
 - Implemented parameter settings, join, leave, publish and unpublish features.
 - Implemented switching audio, video and resolution features.
 - Implemented One-to-One streaming.
-- Implemented mute/unmute(Audio, video) features
+- Implemented mute/unmute(Audio, video) features both local and remote users.
 - Implemented multiple people streaming.
 - Using React.js, Typescript and styled-components.
 - Implemented components testings by testing-library/react.
